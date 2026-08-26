@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "workspaces": ["frontend", "backend"],
   "scripts": {
-    "dev": "concurrently -n api,web -c yellow,cyan \"npm run dev -w backend\" \"npm run dev -w frontend\"",
-    "build": "npm run build -w frontend",
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm run dev -w backend\" \"npm run dev -w frontend -- --host\""
+    ,"build": "npm run build -w frontend",
     "test": "npm test -w backend",
     "db:migrate": "npm run migrate -w backend",
     "db:seed": "npm run seed -w backend"
