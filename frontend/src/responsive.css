@@ -1,0 +1,109 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+.choice > div,
+.trust > div,
+.steps > article,
+.privacy > div,
+.split > div,
+.call article,
+.cards article,
+.op-head > div {
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+p,
+blockquote,
+.btn,
+button {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 800px) {
+  header {
+    padding-inline: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 13vw, 52px);
+  }
+
+  .privacy,
+  .dialog {
+    width: 100%;
+  }
+
+  .cards footer {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cards footer button {
+    text-align: left;
+  }
+
+  .total strong {
+    font-size: clamp(36px, 12vw, 50px);
+  }
+}
+
+@media (max-width: 420px) {
+  header {
+    padding-inline: 16px;
+  }
+
+  .brand {
+    font-size: 21px;
+  }
+
+  .mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero {
+    padding-inline: 20px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .privacy {
+    padding: 28px 22px;
+  }
+
+  .modal {
+    padding: 12px;
+  }
+
+  .dialog {
+    padding: 34px 22px;
+  }
+
+  .choice > div,
+  .statement,
+  .page,
+  .why > section,
+  .site-footer {
+    padding-inline: 20px;
+  }
+}

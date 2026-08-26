@@ -1,0 +1,27 @@
+import { Router } from 'express';
+import { z } from 'zod';
+import { auth, admin } from '../middleware/auth.js';
+import { validate } from '../middleware/validate.js';
+import { asyncHandler } from '../utils/http.js';
+import * as authCtrl from '../controllers/authController.js';
+import * as postCtrl from '../controllers/postController.js';
+import * as community from '../controllers/communityController.js';
+import { pool } from '../db/pool.js';
+
+const router=Router();
+const credentials=z.object({email:z.email('Informe um e-mail válido.'),password:z.string().min(8,'A senha precisa ter ao menos 8 caracteres.')});
+const registration=credentials.extend({name:z.string().min(2).max(160),region:z.string().min(2).max(100)});
+const post=z.object({type:z.enum(['need','offer']),category:z.string().min(2).max(80),title:z.string().min(5).max(140),description:z.string().min(12).max(3000),modality:z.enum(['in_person','remote','either']),urgency:z.enum(['low','medium','high']),region:z.string().min(2).max(100),availableFrom:z.string().nullish(),availableUntil:z.string().nullish()});
+router.get('/health',(_req,res)=>res.json({status:'ok'}));
+router.post('/auth/register',validate(registration),asyncHandler(authCtrl.register));
+router.post('/auth/login',validate(credentials),asyncHandler(authCtrl.login));
+router.post('/auth/logout',auth,authCtrl.logout); router.get('/auth/me',auth,asyncHandler(authCtrl.me));
+router.get('/categories',asyncHandler(async(_req,res)=>{const [categories]=await pool.query('SELECT name,slug FROM categories ORDER BY name');res.json({categories});}));
+router.get('/posts',asyncHandler(postCtrl.index)); router.post('/posts',auth,validate(post),asyncHandler(postCtrl.create)); router.get('/posts/:id/matches',auth,asyncHandler(postCtrl.matches));
+router.get('/votes/status',asyncHandler(community.voteStatus)); router.post('/votes',auth,asyncHandler(community.vote));
+router.post('/contributions/checkout',auth,asyncHandler(community.contribution)); router.get('/transparency',asyncHandler(community.transparency));
+router.post('/reports',auth,validate(z.object({reportedUserId:z.string().uuid().optional(),postId:z.string().uuid().optional(),reason:z.string().min(3).max(80),details:z.string().max(1000).optional()})),asyncHandler(community.report));
+router.post('/blocks/:userId',auth,asyncHandler(community.block));
+router.get('/admin/reports',auth,admin,asyncHandler(async(_req,res)=>{const [reports]=await pool.query('SELECT * FROM reports ORDER BY created_at DESC LIMIT 100');res.json({reports});}));
+router.post('/admin/transparency',auth,admin,validate(z.object({kind:z.enum(['goal','expense','milestone','update','result']),title:z.string().min(3).max(160),description:z.string().min(5).max(5000),amountCents:z.number().int().nonnegative().optional(),status:z.string().max(40).optional(),occurredOn:z.string()})),asyncHandler(async(req,res)=>{const {randomUUID}=await import('node:crypto');const x=req.validated;await pool.query('INSERT INTO transparency_updates(id,kind,title,description,amount_cents,status,occurred_on) VALUES (?,?,?,?,?,?,?)',[randomUUID(),x.kind,x.title,x.description,x.amountCents||null,x.status||null,x.occurredOn]);res.status(201).json({message:'Atualização publicada.'});}));
+export default router;
