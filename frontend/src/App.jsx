@@ -1,12 +1,67 @@
 import {useEffect,useState} from 'react';
-import {ArrowRight,Check,HeartHandshake,Leaf,LockKeyhole,Menu,Search,ShieldCheck,Sparkles,X} from 'lucide-react';
+import {ArrowRight,HeartHandshake,Leaf,LockKeyhole,Menu,Search,ShieldCheck,Sparkles,X} from 'lucide-react';
 import {api} from './api.js';
 
 const routes=['inicio','como-funciona','por-que','oportunidades','transparencia'];
 const go=(page)=>{location.hash=page;scrollTo({top:0,behavior:'smooth'});};
 function Button({children,kind='primary',...props}){return <button className={`btn ${kind}`} {...props}>{children}</button>}
 function Header({user,onAuth}){const [open,setOpen]=useState(false);return <header><a className="brand" onClick={()=>go('inicio')}><span className="mark"><HeartHandshake/></span>coopera</a><nav className={open?'open':''}>{[['inicio','Início'],['como-funciona','Como funciona'],['por-que','Por que o Coopera?'],['oportunidades','Oportunidades'],['transparencia','Transparência']].map(([r,l])=><a key={r} onClick={()=>{go(r);setOpen(false)}}>{l}</a>)}</nav><div className="head-actions">{user?<button className="profile" onClick={()=>go('oportunidades')}>{user.alias?.slice(0,1)||'C'}</button>:<Button kind="ghost" onClick={onAuth}>Entrar</Button>}<button className="menu" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></header>}
-function Home({publish}){return <><main className="hero"><div className="eyebrow"><Sparkles size={16}/> Cooperação entre iguais</div><h1>Eu preciso.<br/><em>Eu posso cooperar.</em></h1><p>Necessidades e possibilidades existem ao nosso redor. O Coopera ajuda a aproximá-las.</p><div className="hero-actions"><Button onClick={()=>publish('need')}>Preciso de algo <ArrowRight/></Button><Button kind="secondary" onClick={()=>publish('offer')}>Posso cooperar <ArrowRight/></Button></div><div className="privacy-note"><LockKeyhole/><span><b>Sua identidade começa protegida.</b><br/>Ela só é compartilhada quando a cooperação realmente precisar.</span></div></main><section className="choice"><div><span className="number">01</span><h2>PRECISO</h2><p>Conte à comunidade algo de que você precisa, com dignidade e privacidade.</p><button onClick={()=>publish('need')}>Publicar uma necessidade <ArrowRight/></button></div><div><span className="number">02</span><h2>POSSO COOPERAR</h2><p>Compartilhe uma habilidade, objeto, conhecimento ou um pouco do seu tempo.</p><button onClick={()=>publish('offer')}>Publicar uma oferta <ArrowRight/></button></div></section><section className="statement"><p>Uma mesma pessoa pode precisar hoje e oferecer amanhã.</p><h2>Todos podemos precisar.<br/><span>Todos podemos cooperar.</span></h2><Button kind="light" onClick={()=>go('como-funciona')}>Entenda como funciona <ArrowRight/></Button></section><section className="trust"><div><ShieldCheck/><h3>Identidade protegida</h3><p>Primeiro, importa a necessidade e a possibilidade de cooperar.</p></div><div><Check/><h3>Informações verificadas</h3><p>Confirmações importantes sem exposição desnecessária.</p></div><div><Leaf/><h3>Bem-estar compartilhado</h3><p>Decisões orientadas por utilidade, autonomia, segurança e cuidado.</p></div></section></>}
+function Home({publish}){return <main className="home">
+  <section className="home-hero">
+    <div className="eyebrow"><Sparkles size={16}/> Cooperação entre iguais</div>
+    <h1>A ajuda pode existir.<br/><em>O encontro é que muitas vezes não acontece.</em></h1>
+    <p className="home-hero-problem">Quem precisa não sabe quem pode ajudar.<br/>Quem pode ajudar não sabe quem precisa.</p>
+    <p className="home-hero-answer">O Coopera existe para aproximar essas duas pontas.</p>
+  </section>
+
+  <section className="home-principle">
+    <div className="home-section-label">O princípio</div>
+    <h2>E se pudéssemos cooperar olhando primeiro para a necessidade?</h2>
+    <div className="principle-questions">
+      <div><span>Antes de perguntar</span><p>“Quem é essa pessoa?”</p></div>
+      <ArrowRight aria-hidden="true"/>
+      <div className="question-focus"><span>Podemos perguntar</span><p>“Posso cooperar com essa necessidade?”</p></div>
+    </div>
+  </section>
+
+  <section className="home-privacy">
+    <div className="privacy-icon"><LockKeyhole/></div>
+    <div><div className="home-section-label">Como começa</div><h2>Por isso, sua identidade começa protegida.</h2></div>
+    <div className="privacy-copy"><p>Primeiro importa a necessidade e a possibilidade de cooperar.</p><p>A identidade só precisa ser compartilhada quando a cooperação realmente exigir.</p></div>
+  </section>
+
+  <section className="home-isonomy">
+    <div className="home-section-label">Cooperação entre iguais</div>
+    <h2>Sem transformar cooperação em status.</h2>
+    <ul><li>Sem seguidores.</li><li>Sem ranking de generosidade.</li><li>Sem expor vulnerabilidade para gerar engajamento.</li><li>Sem ajudar para acumular status.</li></ul>
+    <div className="isonomy-note"><ShieldCheck/><div><strong>Isonomia aplicada à cooperação.</strong><p>A necessidade e a possibilidade de ajudar vêm antes da identidade social de quem participa.</p></div></div>
+  </section>
+
+  <section className="home-action">
+    <div className="home-section-label">O que você pode fazer</div>
+    <h2>Eu preciso.<br/><em>Eu posso cooperar.</em></h2>
+    <p>No Coopera, qualquer pessoa pode registrar uma necessidade ou uma possibilidade de cooperação.</p>
+    <div className="hero-actions"><Button onClick={()=>publish('need')}>Preciso de algo <ArrowRight/></Button><Button kind="secondary" onClick={()=>publish('offer')}>Posso cooperar <ArrowRight/></Button></div>
+  </section>
+
+  <section className="home-choices">
+    <article><span>01 · PRECISO</span><h3>Uma necessidade</h3><p>Conte algo de que você precisa, preservando sua dignidade e privacidade.</p><button onClick={()=>publish('need')}>Publicar uma necessidade <ArrowRight/></button></article>
+    <article><span>02 · POSSO COOPERAR</span><h3>Uma possibilidade</h3><p>Compartilhe tempo, conhecimento, habilidade, objeto ou outra forma de cooperação.</p><button onClick={()=>publish('offer')}>Publicar uma oferta <ArrowRight/></button></article>
+    <p className="choices-bridge"><HeartHandshake/> Não são dois tipos de pessoa. São dois papéis que todos podemos ocupar.</p>
+  </section>
+
+  <section className="home-vision">
+    <Leaf/>
+    <div className="home-section-label">Interdependência</div>
+    <h2>Todos podemos precisar.<br/><span>Todos podemos cooperar.</span></h2>
+    <p>Hoje você pode oferecer algo. Amanhã pode precisar de algo. Somos interdependentes.</p>
+  </section>
+
+  <section className="home-closing">
+    <div><div className="home-section-label">Uma ponte possível</div><h2>Uma rede de cooperação entre iguais.</h2></div>
+    <div className="closing-actions"><Button kind="light" onClick={()=>publish('need')}>Preciso de algo <ArrowRight/></Button><Button kind="outline-light" onClick={()=>publish('offer')}>Posso cooperar <ArrowRight/></Button><button className="why-link" onClick={()=>go('por-que')}>Por que o Coopera?</button></div>
+  </section>
+</main>}
 function How(){const steps=[['01','Publique','Diga do que precisa ou o que pode oferecer.'],['02','Encontre','O Coopera aproxima possibilidades compatíveis.'],['03','Coopere','Converse com segurança e combine os detalhes.'],['04','Conclua','Registre a conclusão da cooperação.']];return <main className="page"><div className="eyebrow">Simples por escolha</div><h1>Cooperar pode ser mais fácil.</h1><p className="lead">Um caminho claro, sem competição por atenção e com privacidade em cada etapa.</p><div className="steps">{steps.map(s=><article key={s[0]}><span>{s[0]}</span><h2>{s[1]}</h2><p>{s[2]}</p></article>)}</div><section className="privacy"><div><div className="eyebrow">Anonimato contextual</div><h2>Privacidade quando possível.<br/>Identificação quando necessária.<br/><em>Segurança sempre.</em></h2></div><div className="levels"><p><b>1 · Identidade protegida</b><br/>Você conhece a oportunidade, não dados pessoais irrelevantes.</p><p><b>2 · Identidade verificada</b><br/>O Coopera confirma atributos importantes sem revelá-los por inteiro.</p><p><b>3 · Identidade compartilhada</b><br/>Com consentimento, apenas quando a cooperação exigir.</p></div></section></main>}
 function Why({vote,publish}){return <main className="why"><section><div className="eyebrow">Por que o Coopera?</div><h1>E se fosse mais fácil <em>cooperar?</em></h1><p>Todos precisamos de alguma coisa. Em outros momentos, somos nós que temos tempo, uma habilidade, um objeto ou conhecimento para oferecer.</p><blockquote>Quem precisa não sabe quem pode ajudar — e quem poderia ajudar não sabe quem precisa.</blockquote></section><section className="split"><div><small>EU PRECISO</small><h2>“Eu preciso disso.”</h2></div><div><small>EU POSSO COOPERAR</small><h2>“Eu posso oferecer isso.”</h2></div></section><section className="focus"><p>Uma pessoa a aproximadamente 2 km precisa de ajuda para transportar um móvel.</p><h2>“Posso cooperar com essa necessidade?”</h2><span>em vez de “Quem é a pessoa que está pedindo?”</span></section><section className="manifest"><h2>Cooperação entre iguais.</h2><p>Sem rankings de generosidade. Sem seguidores. Sem expor vulnerabilidade para gerar engajamento. O Coopera não decide quem é “bom” ou quem “merece” ajuda.</p><b>Isonomia aplicada à cooperação.</b></section><section className="inter"><Leaf/><h2>Somos interdependentes.</h2><p>Dependemos de outras pessoas, das comunidades, de outros seres vivos e dos recursos deste planeta. Cooperar é uma forma prática de cuidar do bem-estar compartilhado.</p></section><section className="call"><h2>Você acredita que vale a pena construir uma ferramenta como esta?</h2><div><article><h3>Apoie com seu voto</h3><p>Seu voto significa: “Eu gostaria que essa ideia tivesse a oportunidade de existir.”</p><Button onClick={vote}>Votar pelo Coopera</Button></article><article><h3>Ajude a construir</h3><p>Contribua voluntariamente quando essa opção estiver disponível. Você não precisa doar para apoiar.</p><Button kind="secondary" onClick={()=>alert('Contribuições ainda não estão habilitadas. Nenhuma cobrança foi realizada.')}>Contribuir com o Coopera</Button></article></div><small>Sua doação não compra privilégios. Uma pessoa, uma voz.</small></section><section className="closing"><HeartHandshake/><h2>Talvez possamos usar a tecnologia também para <em>cooperar melhor.</em></h2><Button kind="light" onClick={()=>publish('offer')}>Começar a cooperar <ArrowRight/></Button></section></main>}
 function Opportunities({user,onAuth,publish}){const [posts,setPosts]=useState([]),[q,setQ]=useState(''),[type,setType]=useState('');useEffect(()=>{api(`/posts?${new URLSearchParams({q,type})}`).then(x=>setPosts(x.posts)).catch(()=>{})},[q,type]);return <main className="page opportunities"><div className="op-head"><div><div className="eyebrow">Oportunidades próximas</div><h1>Algo útil pode começar aqui.</h1></div><Button onClick={()=>user?publish('need'):onAuth()}>Nova publicação</Button></div><div className="filters"><label><Search/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Buscar uma necessidade ou oferta"/></label><button className={!type?'active':''} onClick={()=>setType('')}>Todas</button><button className={type==='need'?'active':''} onClick={()=>setType('need')}>Preciso</button><button className={type==='offer'?'active':''} onClick={()=>setType('offer')}>Posso cooperar</button></div><div className="cards">{posts.map(p=><article key={p.id}><div className={`tag ${p.type}`}>{p.type==='need'?'PRECISO':'POSSO COOPERAR'}</div><small>{p.category} · {p.region||'Região protegida'}</small><h3>{p.title}</h3><p>{p.description}</p><footer><span>{p.identity_verified?<><ShieldCheck/> Identidade verificada</>:'Identidade protegida'}</span><button onClick={()=>user?alert('A proposta de cooperação será aberta na próxima etapa do MVP.'):onAuth()}>Ver oportunidade <ArrowRight/></button></footer></article>)}{!posts.length&&<div className="empty"><HeartHandshake/><h3>A primeira oportunidade pode ser a sua.</h3><p>Publique algo de que precisa ou algo que pode oferecer.</p></div>}</div></main>}
