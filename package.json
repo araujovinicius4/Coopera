@@ -1,14 +1,18 @@
 {
   "name": "coopera",
   "private": true,
-  "version": "1.0.0",
-  "workspaces": ["frontend", "backend"],
+  "version": "2.0.0",
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
-    "dev": "concurrently -n api,web -c yellow,cyan \"npm run dev -w backend\" \"npm run dev -w frontend -- --host\""
-    ,"build": "npm run build -w frontend",
-    "test": "npm test -w backend",
-    "db:migrate": "npm run migrate -w backend",
-    "db:seed": "npm run seed -w backend"
+    "dev": "npm run dev -w frontend -- --host 0.0.0.0",
+    "build": "npm run build -w frontend",
+    "preview": "npm run preview -w frontend -- --host 0.0.0.0",
+    "test": "node --test frontend/src/services/mockApi.test.js",
+    "test:e2e": "playwright test"
   },
-  "devDependencies": { "concurrently": "^9.1.2" }
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
 }

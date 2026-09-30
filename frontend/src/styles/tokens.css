@@ -1,0 +1,33 @@
+/* Paleta provisória baseada na direção textual. Validar com a arte oficial. */
+:root {
+  --coopera-primary: #14568b;
+  --coopera-primary-dark: #103e65;
+  --coopera-blue: #176bb0;
+  --coopera-blue-soft: #eaf4fc;
+  --coopera-green: #22734b;
+  --coopera-green-soft: #edf7ef;
+  --coopera-idea: #70539a;
+  --coopera-idea-soft: #f3eef9;
+  --coopera-bg: #f7fafc;
+  --coopera-surface: #ffffff;
+  --coopera-surface-muted: #f1f6f9;
+  --coopera-border: #dce7ee;
+  --coopera-text: #243e52;
+  --coopera-text-muted: #586e7e;
+  --coopera-success: #22734b;
+  --coopera-warning: #865d19;
+  --coopera-danger: #b13c42;
+  --coopera-danger-soft: #fff0f1;
+  --coopera-on-primary: #ffffff;
+  --coopera-focus: #176bb0;
+  --coopera-connection: #a7cbdc;
+  --coopera-overlay: #173e6059;
+  --coopera-shadow-color: #144d7410;
+  --coopera-shadow-sm: 0 3px 14px var(--coopera-shadow-color);
+  --coopera-shadow-md: 0 12px 36px #144d741a;
+  --coopera-radius-sm: 8px;
+  --coopera-radius-md: 14px;
+  --coopera-radius-lg: 22px;
+  --coopera-font-body: "DM Sans", Arial, sans-serif;
+  --coopera-font-heading: "Manrope", Arial, sans-serif;
+}
